@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
+    <div id="player"></div>
+
+    <script>
+      // 2. This code loads the IFrame Player API code asynchronously.
+      var tag = document.createElement('script');
+      var urlList=['NCFg7G63KgI']; 
+      var time_update_interval = 0,index=0;
+      tag.src = "https://www.youtube.com/iframe_api";
+      var firstScriptTag = document.getElementsByTagName('script')[0];
+      firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+      // 3. This function creates an <iframe> (and YouTube player)
+      //    after the API code downloads.
+      function initialize(){
+
+      // Update the controls on load
+      updateTimerDisplay();
+      // Clear any old interval.
+      clearInterval(time_update_interval);
+      urlList.push('5DEdR5lqnDE');
+      urlList.push('o9UQSUHHdtA');
+      urlList.push('uth-8cr4XFc');
+      urlList.push('taJ60kskkns');
+      urlList.push('FG0fTKAqZ5g');
+      
+      // Start interval to update elapsed time display and
+      // the elapsed part of the progress bar every second.
+      time_update_interval = setInterval(function () {
+            updateTimerDisplay();
+            }, 1000)
+
+      }
+      // This function is called by initialize()
+      function updateTimerDisplay(){
+          // Update current time text display.
+
+          var currTime = formatTime(player.getCurrentTime());
+          var duration = formatTime(player.getDuration());
+          document.getElementById("current-time").innerHTML=currTime;
+          document.getElementById("duration").innerHTML= duration;
+          document.getElementById("index").innerHTML= index;
+          document.getElementById("urlList-length").innerHTML= urlList.length;
+
+          if(currTime==duration && index<urlList.length-1){
+            cueVideo();
+            index++;
+          }
+
+       }
+
+      function formatTime(time){
+          time = Math.round(time);
+
+          var minutes = Math.floor(time / 60),
+          seconds = time - minutes * 60;
+
+          seconds = seconds < 10 ? '0' + seconds : seconds;
+
+          return minutes + ":" + seconds;
+      }
+      
+      function urlListt0String(){
+      	var urlString="";
+      	for (var i = 1; i < urlList.length; i++) {
+      		if(i==urlList.length-1){
+      			urlString = urlString + urlList[i];
+				console.log("urlString"+urlString);      			
+      		}
+      		else
+  			{
+  				urlString  = urlString + urlList[i]+',';
+  				console.log("urlString"+urlString);
+  			}
+      	}
+//      	return 'taJ60kskkns,FG0fTKAqZ5g';
+
+      	return urlString;
+      }
+
+      var player;
+      function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '390',
+          width: '640',
+          videoId:urlList[index],
+           playerVars: {
+          //   color: 'white',
+             playlist: 'taJ60kskkns,FG0fTKAqZ5g'
+          //   playlist: urlListt0String()
+           },
+          events: {
+          //  'onReady': onPlayerReady,
+          'onReady': initialize,
+    //        'onStateChange': onPlayerStateChange`
+          }
+        });
+      }
+
+       function onPlayerReady(event) {
+        event.target.playVideo();
+      }
+
+       var done = false;
+     function cueVideo(event){
+         player.cueVideoById({videoId:urlList[index]});
+         player.playVideo();
+      }
+      function stopVideo() {
+        player.stopVideo();
+      }
+      function pushUrl(){
+        urlList.push(document.getElementById("url_text").value);
+
+//        urlList.push('5DEdR5lqnDE');
+      }
+    </script>
+    <br>
+    <p>index: <span id="index"></span>
+    <br>
+    <p>urlList-length:<span id="urlList-length"></span>
+    <br>
+    <p><span id="current-time">0:00</span> / <span id="duration">0:00</span></p>
+    <br>
+    URL: <input type="text" id="url_text" name="url"><br>
+    <button onclick="pushUrl()">Add</button><br>
+    <br>
+    5DEdR5lqnDE<br>
+    <br>
+  </body>
+</html>
