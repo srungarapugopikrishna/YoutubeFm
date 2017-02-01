@@ -132,7 +132,14 @@
         player.videoId = urlList[currPlaying];
       }
       function pushUrl(){
-       urlList.push(document.getElementById("url_text").value);
+       var url = document.getElementById("url_text").value;
+		var videoid = url.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
+		if(videoid != null) {
+   			urlList.push(videoid[1]);
+   			//alert("video id = ",videoid[1]);
+		} else { 
+    		//alert("The youtube url is not valid.");
+		}
       // alert(document.getElementById("url_text").value);
        //player.playerVars[playlist] = '5DEdR5lqnDE,taJ60kskkns,FG0fTKAqZ5g';
        //player.videoId = 'h4SlAc2U1A4';
