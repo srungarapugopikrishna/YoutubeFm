@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
-  <body >
+  <body>
     <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
     <div id="player"></div>
 
     <script>
       // 2. This code loads the IFrame Player API code asynchronously.
       var tag = document.createElement('script');
-      var urlList=['NCFg7G63KgI']; 
-      var time_update_interval = 0,index=0;
+      var urlList=[]; 
+      var time_update_interval = 0,index=0, currPlaying = 0;
       tag.src = "https://www.youtube.com/iframe_api";
       var firstScriptTag = document.getElementsByTagName('script')[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
@@ -18,10 +18,15 @@
       function initialize(){
 
       // Update the controls on load
-      updateTimerDisplay();
+      
       // Clear any old interval.
       clearInterval(time_update_interval);
-
+      urlList.push('ulfBjAIjjyw');
+      urlList.push('UBrdkw6RACU');
+      urlList.push('ipNB-ijxHiI');
+      urlList.push('fPScQWW8Mzc');
+      updateTimerDisplay();
+      player.videoId = urlList[currPlaying];
       // Start interval to update elapsed time display and
       // the elapsed part of the progress bar every second.
       time_update_interval = setInterval(function () {
@@ -40,9 +45,9 @@
           document.getElementById("index").innerHTML= index;
           document.getElementById("urlList-length").innerHTML= urlList.length;
 
-          if(currTime==duration && index<urlList.length){
-            index++;
+          if(currTime==duration && index<=urlList.length-1){
             cueVideo();
+            index++;
           }
 
        }
@@ -58,17 +63,38 @@
           return minutes + ":" + seconds;
       }
       
+      function urlListt0String(){
+      /*	var urlString="";
+      	for (var i = 1; i < urlList.length; i++) {
+      		if(i==urlList.length-1){
+      			urlString = urlString + urlList[i];
+				console.log("urlString"+urlString);      			
+      		}
+      		else
+  			{
+  				urlString  = urlString + urlList[i]+',';
+  				console.log("urlString"+urlString);
+  			}
+      	}
+   */ //  	return 'taJ60kskkns,FG0fTKAqZ5g,FG0fTKAqZ5g';
 
+//      	return urlString;
+      }
 
       var player;
       function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
           height: '390',
           width: '640',
-          videoId:urlList[index],
+         // videoId:urlList[index],
+           playerVars: {
+          //   color: 'white',
+          //   playlist: 'taJ60kskkns,FG0fTKAqZ5g'
+     //        playlist: urlListt0String()
+           },
           events: {
-          //  'onReady': onPlayerReady,
-          'onReady': initialize,
+           //  'onReady': onPlayerReady,
+             'onReady': initialize,
     //        'onStateChange': onPlayerStateChange`
           }
         });
@@ -83,12 +109,33 @@
          player.cueVideoById({videoId:urlList[index]});
          player.playVideo();
       }
+      function playVideo(){
+          player.playVideo();
+      }
+      function pauseVideo(){
+          player.pauseVideo();
+      }
       function stopVideo() {
         player.stopVideo();
+        player.pauseVideo();
+        
+        //initialize();
+      }
+      function nextVideo() {
+        player.nextVideo();
+        currPlaying = index+1;
+        player.videoId = urlList[currPlaying];
+      }
+      function previousVideo() {
+        player.nextVideo();
+        currPlaying = index-1;
+        player.videoId = urlList[currPlaying];
       }
       function pushUrl(){
-        urlList.push(document.getElementById("url_text").value);
-
+       urlList.push(document.getElementById("url_text").value);
+      // alert(document.getElementById("url_text").value);
+       //player.playerVars[playlist] = '5DEdR5lqnDE,taJ60kskkns,FG0fTKAqZ5g';
+       //player.videoId = 'h4SlAc2U1A4';
 //        urlList.push('5DEdR5lqnDE');
       }
     </script>
@@ -101,8 +148,13 @@
     <br>
     URL: <input type="text" id="url_text" name="url"><br>
     <button onclick="pushUrl()">Add</button><br>
-    o9UQSUHHdtA<br>
-    5DEdR5lqnDE<br>
-    uth-8cr4XFc<br>
+    <button onclick="playVideo()">Play</button>
+    <button onclick="pauseVideo()">Pause</button>
+    <button onclick="stopVideo()">Stop</button><br>
+     
+    F3WuZXpj8qo<br>
+    X9RKX4IzNVw<br>
+    Tp4EA8i-oY0<br>
+    <br>
   </body>
 </html>
